@@ -21,14 +21,18 @@ cur = conexao.cursor()
 #)
 #""")
 
-users = [
-    ('Kaua','k@k.com', '1234'),
+usuarios = [
+    ('Kaua', 'k@k.com', '1234'),
     ('Willin Bonner', 'bonner@william.com', '12345'),
-    ('Ricardo Coração de leão', 'rei@cruzado.com', '1199'),
+    ('Ricardo Coração de leão', 'rei@cruzado.com', '1199')
 ]
-cur.executemany("INSERT INTO user (email, name, password) VALUES (?, ?, ?)", users)
 
-conexao.commit
+# Executar a operação INSERT para cada usuário
+cur.executemany("INSERT INTO user (email, name, password) VALUES (?, ?, ?)", usuarios)
 
+# Confirmar as alterações no banco de dados
+conexao.commit()
+
+# Fechar o cursor e a conexão
 cur.close()
 conexao.close()
