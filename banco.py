@@ -1,38 +1,58 @@
 import sqlite3
 
-#Conexão com o db:
-conexao = sqlite3.connect('db.db')
-cur = conexao.cursor()
+#Conexão:
+conexao = sqlite3.connect("db.db")
+cursor = conexao.cursor()
+
+#Tabelas
 
 #cursor.execute("""
-#CREATE TABLE user(
+#CREATE TABLE compradores(
 #    id INTEGER PRIMARY KEY,
-#    email TEXT NOT NULL UNIQUE,
-#    name TEXT NOT NULL, 
-#    password CHAR NOT NULL
+#    nome CHAR NOT NULL,
+#    email CHAR NOT NULL UNIQUE
 #)
 #""")
 
 #cursor.execute("""
-#CREATE TABLE produtos(
+#CREATE TABLE vendedores(
 #    id INTEGER PRIMARY KEY,
-#    nome_produto TEXT NOT NULL,
-#    preco DECIMAL(10, 2)
+#    nome CHAR NOT NULL,
+#    email CHAR NOT NULL unique 
 #)
 #""")
 
-usuarios = [
-    ('Kaua', 'k@k.com', '1234'),
-    ('Willin Bonner', 'bonner@william.com', '12345'),
-    ('Ricardo Coração de leão', 'rei@cruzado.com', '1199')
+#cursor.execute("""
+#CREATE TABLE PRODUTOS(
+#    id INTEGER PRIMARY KEY,
+#    nome CHAR NOT NULL,
+#    preco DECIMAL(10, 2) NOT NULL,
+#    FOREIGN KEY (id) REFERENCES vendedores (id)
+#)               
+#""")
+
+#Popular o banco de dados
+
+users = [
+    (1, "Kaua", "K@k.com"),
+    (2, "Willian Bonner", "w@b.com"),
+    (3, "Osvaldo", "o@s.com")
 ]
 
-# Executar a operação INSERT para cada usuário
-cur.executemany("INSERT INTO user (email, name, password) VALUES (?, ?, ?)", usuarios)
+vendedores = [
+    (1, "Olavo", "o@l.com")
+]
 
-# Confirmar as alterações no banco de dados
+produtos = [
+    (1, "Calça", 10.46)
+]
+
+#Inserir dados nas tabelas
+cursor.executemany("INSERT INTO compradores (id, nome, email) VALUES (?, ?, ?)", users)
+cursor.executemany("INSERT INTO vendedores (id, nome, email) VALUES (?, ?, ?)", vendedores)
+cursor.executemany("INSERT INTO produtos (id, nome, preco) VALUES (?, ?, ?)", produtos)
+
 conexao.commit()
 
-# Fechar o cursor e a conexão
-cur.close()
+cursor.close()
 conexao.close()
