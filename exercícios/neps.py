@@ -1,28 +1,34 @@
 import sqlite3
 
+#Conexão
+conexao = sqlite3.connect('neps_sql_course(2).db')
+cursor = conexao.cursor()
 
-def check_username_exists(cur, username):
-    #Pegar os dados do banco de dados:
-    cur.execute("SELECT username FROM user")
-    users = cur.fetchall()
-    ok = False
-    #Verificar a existência do username no na tabela
-    for user in users:
-        if user == username:
-             ok = True
-             break
-    if ok == False:
-        cur.execute("INSERT INTO (username) VALUES (?)", username)
-    return ok
+#Verificação de usuários
+def verificar(nomeRecebido, nomeCadastro):
+    return True if nomeCadastro == nomeRecebido else False
 
-conexao = sqlite3.connect("neps_sql_course.db")
-cur = conexao.cursor()
+
+#Receber o nome de usuário
+nome = input("Digite o nome de usuário: ")
+encontrado = False
+
+#Realizar consultas no db
+cursor.execute('SELECT username FROM user')
+usuarios = cursor.fetchall()
+
+#Procurar
+for nomes in usuarios:
+    if verificar(nome, nomes):
+        encontrado = True
+        break
+
+#Responder ao neps
+print("S") if encontrado else print("N")
+
+#Fechar conexão
+cursor.close()
+conexao.close() 
     
-username = input()
-if check_username_exists(cur, username):
-    print("O usuário já existe")
-else:
-    print("O usuário não existe")
 
-cur.close()
-conexao.close()
+
