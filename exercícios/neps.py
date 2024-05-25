@@ -8,7 +8,6 @@ cursor = conexao.cursor()
 def verificar(nomeRecebido, nomeCadastro):
     return True if nomeCadastro == nomeRecebido else False
 
-
 #Receber o nome de usuário
 nome = input("Digite o nome de usuário: ")
 encontrado = False
@@ -23,12 +22,6 @@ for nomes in usuarios:
         encontrado = True
         break
 
-#Responder ao neps
 print("S") if encontrado else print("N")
 
-#Fechar conexão
-cursor.close()
 conexao.close() 
-    
-
-
