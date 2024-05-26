@@ -1,23 +1,39 @@
 import sqlite3
-from queue import SimpleQueue
-fila = SimpleQueue()
+fila = {}
+
+#Função para encontrar a dificuldade
 def dificuldade(cur, dificuldade):
-    cur.execute('SELECT title FROM programming_task WHERE difficulty = ?', (dificuldade,))
-    dificuldades = cur.fetchall()
-    for dificuldade in dificuldades:
-        fila.put(dificuldade[0])
+    #Realizar consulta
+    cur.execute('SELECT title FROM programming_task WHERE difficulty <= ?', (dificuldade))
+
+    #Iterar sobre as dificuldades
+    for dificuldade in cur.fetchall():
+        fila.add(dificuldade)
+
+#Função para encontrar as resolvidas
 def resolvidas(cur, resolvido):
-    cur.execute('SELECT title FROM programming_task WHERE users_solved = ?', (resolvido,))
-    titulos = cur.fetchall()
-    for titulo in titulos:
-        fila.put(titulo[0])
+    #Realizar consulta
+    cur.execute('SELECT title FROM programming_task WHERE users_solved <= ?', (resolvido,))
+    
+    #Realizar consulta
+    for titulo in cur.fetchall():
+        fila.add(titulo)
+
+#Conexão
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
-resolvida = input("Número de resoluções: ")
-dificuldades = input("Dificuldade: ")
+
+#Inputar
+resolvida = input()
+dificuldades = input()
+
+#Passar para as funções
 resolvidas(cursor, resolvida)
 dificuldade(cursor, dificuldades)
-while not fila.empty():
-    print(fila.get())
+
+#Resposta
+while len(fila) >0:
+    print(fila.remove())
+
 cursor.close()
 conexao.close()
