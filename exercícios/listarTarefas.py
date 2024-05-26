@@ -1,39 +1,41 @@
 import sqlite3
-fila = {}
 
-#Função para encontrar a dificuldade
+# Set para armazenar os títulos das tarefas
+titles = set()
+
+# Função para encontrar a dificuldade
 def dificuldade(cur, dificuldade):
-    #Realizar consulta
-    cur.execute('SELECT title FROM programming_task WHERE difficulty <= ?', (dificuldade))
-
-    #Iterar sobre as dificuldades
-    for dificuldade in cur.fetchall():
-        fila.add(dificuldade)
-
-#Função para encontrar as resolvidas
-def resolvidas(cur, resolvido):
-    #Realizar consulta
-    cur.execute('SELECT title FROM programming_task WHERE users_solved <= ?', (resolvido,))
+    # Realizar consulta
+    cur.execute('SELECT title FROM programming_task WHERE difficulty = ?', (dificuldade,))
     
-    #Realizar consulta
+    # Iterar sobre as dificuldades
     for titulo in cur.fetchall():
-        fila.add(titulo)
+        titles.add(titulo[0])  # Adicionar título ao conjunto
 
-#Conexão
+# Função para encontrar as resolvidas
+def resolvidas(cur, resolvido):
+    # Realizar consulta
+    cur.execute('SELECT title FROM programming_task WHERE users_solved = ?', (resolvido,))
+    
+    # Iterar sobre os títulos resolvidos
+    for titulo in cur.fetchall():
+        titles.add(titulo[0])  # Adicionar título ao conjunto
+
+# Conexão
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-#Inputar
-resolvida = input()
-dificuldades = input()
+# Input
+resolvida = input("Quantidade de resolvidos: ")
+dificuldades = input("Dificuldade mínima: ")
 
-#Passar para as funções
+# Passar para as funções
 resolvidas(cursor, resolvida)
 dificuldade(cursor, dificuldades)
 
-#Resposta
-while len(fila) >0:
-    print(fila.remove())
+# Resposta
+for titulo in titles:
+    print(titulo)
 
 cursor.close()
 conexao.close()
