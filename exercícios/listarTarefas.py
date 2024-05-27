@@ -3,7 +3,7 @@ import sqlite3
 #Função para realizar a consulta
 def titulo(cur, nSolved, nDifficulty):
     #Realizar consulta:
-    cur.execute('SELECT title FROM programming_task WHERE users_solved = ? OR difficulty = ?', (nSolved, nDifficulty,))
+    cur.execute('SELECT title FROM programming_task WHERE users_solved >= ? OR difficulty = ?', (nSolved, nDifficulty,))
     titulos = cur.fetchall()
 
     return [titulo[0] for titulo in titulos]
