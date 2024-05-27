@@ -1,41 +1,24 @@
 import sqlite3
 
-# Set para armazenar os títulos das tarefas
-titles = set()
+#Função para realizar a consulta
+def titulo(cur, nSolved, nDifficulty):
+    #Realizar consulta:
+    cur.execute('SELECT title FROM programming_task WHERE users_solved = ? OR difficulty = ?', (nSolved, nDifficulty,))
+    titulos = cur.fetchall()
 
-# Função para encontrar a dificuldade
-def dificuldade(cur, dificuldade):
-    # Realizar consulta
-    cur.execute('SELECT title FROM programming_task WHERE difficulty = ?', (dificuldade,))
-    
-    # Iterar sobre as dificuldades
-    for titulo in cur.fetchall():
-        titles.add(titulo[0])  # Adicionar título ao conjunto
+    return [titulo[0] for titulo in titulos]
 
-# Função para encontrar as resolvidas
-def resolvidas(cur, resolvido):
-    # Realizar consulta
-    cur.execute('SELECT title FROM programming_task WHERE users_solved = ?', (resolvido,))
-    
-    # Iterar sobre os títulos resolvidos
-    for titulo in cur.fetchall():
-        titles.add(titulo[0])  # Adicionar título ao conjunto
-
-# Conexão
+#Estabelecer conexão:
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-# Input
-resolvida = input("Quantidade de resolvidos: ")
-dificuldades = input("Dificuldade mínima: ")
+#Inputar:
+nResolvida = int(input())
+nDificuldade = int(input())
+titulos_resolvidos = titulo(cursor, nResolvida, nDificuldade)
 
-# Passar para as funções
-resolvidas(cursor, resolvida)
-dificuldade(cursor, dificuldades)
-
-# Resposta
-for titulo in titles:
-    print(titulo)
+for title in titulos_resolvidos:
+    print(title)
 
 cursor.close()
 conexao.close()
