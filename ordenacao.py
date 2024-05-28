@@ -4,10 +4,9 @@ import sqlite3
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-cursor.execute('SELECT title FROM programming_task ORDER BY users_solved')
-resultados  = cursor.fetchall()
-for c in resultados:
-    print(resultados)
+cursor.execute('SELECT title, difficulty FROM programming_task ORDER BY difficulty')
+for c in cursor.fetchall():
+    print(c)
 
 cursor.close()
 conexao.close()
