@@ -10,6 +10,6 @@ tarefaID = int(input())
 cursor.execute('SELECT programming_task_id, SUM(runtime), AVG(runtime), MAX(runtime) FROM submission WHERE programming_task_id = ?', (tarefaID, ))
 for c in cursor.fetchall():
     print("{:.2f}\n{:.2f}\n{:.2f}".format(c[1], c[2], c[3]))
-    
+                
 cursor.close()
 conexao.close()
