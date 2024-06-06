@@ -3,16 +3,9 @@ import sqlite3
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-cursor.execute("""
-    INSERT INTO achievement (name, description)
-    VALUES ('Izi pizi', 'Solve 2 programming exercise')
-""")
+values = [(1,1), (2, 1), (3, 1)]
 
-
-cursor.execute("""
-    INSERT INTO achievement (name, description)
-    VALUES ('Mastering in Python', 'Solve 5 programming exercise using Python')
-""")
+cursor.executemany("""INSERT INTO user_achievement (user_id, achievement_id) VALUES (?, ?)""", values)
 
 conexao.commit()
 
