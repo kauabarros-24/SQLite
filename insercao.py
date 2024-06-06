@@ -1,14 +1,11 @@
-import sqlite3 
+import sqlite3
 
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-values = [(1,1), (2, 1), (3, 1)]
+username = "bob' OR 1 = 1;--"
 
-cursor.executemany("""INSERT INTO user_achievement (user_id, achievement_id) VALUES (?, ?)""", values)
+cursor.execute(f"""SELECT * FROM user WHERE username = '{username}'""")
 
-conexao.commit()
-
-
-cursor.close()
-conexao.close()
+nomes = cursor.fetchall()
+print(nomes)
