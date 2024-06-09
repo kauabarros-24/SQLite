@@ -3,25 +3,27 @@ import sqlite3
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-#Receber input's:
-iD = input(': ')
-achievementName = input(': ')
-description = input(': ')
+#Receber input's
+iD = input()
+name = input()
+description = input()
 
-#Fazer fazer consulta para validar:
-cursor.execute('SELECT name, description FROM achievement')
-ok = True
-#Buscar dados
+#Primeira parte: Verficiar se o nome já existe
+cursor.execute('SELECT name FROM achievement')
+ok = False
 for c in cursor.fetchall():
-    if achievementName == c[0] or description == c[1]:
-        ok = False
+    if c[0] == name:
+        ok = True
         break
 
-if ok == True:
-    cursor.execute('UPDATE achievement SET id = ?, name = ?, description = ?', (iD, achievementName, description,))
-    conexao.commit()
+if ok:
+    print('invalid achivement')
 else:
-    print('invalid achievement!')
+    cursor.execute('BEGIN')
+    cursor.execute('UPDATE achievement SET name = ?, description = ? WHERE id = ?', (name, description, iD))
+    conexao.commit()
 
 cursor.close()
 conexao.close()
+
+
