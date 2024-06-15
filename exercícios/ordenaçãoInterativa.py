@@ -2,8 +2,8 @@ import sqlite3
 
 #Estabelecer conexão
 conexao = sqlite3.connect('neps_sql_course.db')
-cursor = conexao.cursor()
 
+cursor = conexao.cursor()
 #Receber os input's
 tipo = input()
 ordem = input()
