@@ -3,9 +3,14 @@ import sqlite3
 conexao = sqlite3.connect('neps_sql_course.db')
 cursor = conexao.cursor()
 
-cursor.execute('SELECT programming_task_id, COUNT(*) AS num_submissions FROM submission GROUP BY programming_task_id')
-for c in cursor.fetchall():
-    print(c)
-    
+cursor.execute("""
+SELECT title
+FROM programming_task
+WHERE difficulty > (SELECT AVG(difficulty) FROM programming_task)
+""")
+
+for row in cursor.fetchall():
+    print(row[0])
+
 cursor.close()
 conexao.close()
